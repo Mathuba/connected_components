@@ -13,10 +13,27 @@ def add_edge(graph, vertex1, vertex2):
         graph[v1].append(v2)
         graph[v2].append(v1)
 
-def number_of_components(adj):
-    result = 0
-    #write your code here
-    return result
+def explore(graph, vert, cc_val=None, visited=None):
+    if visited is None:
+        visited = []
+    if cc_val is None:
+        cc_val = 0
+    cc_num = cc_val
+    visited.append(vert)
+    for neighbour in graph[vert]:
+        if neighbour not in visited:
+            explore(graph, neighbour, cc_num, visited)
+    return visited
+
+def number_of_components(graph, visit=None):
+    if visit is None:
+        visit = []
+    cc = 0
+    for vertex in graph.keys():
+        if vertex not in visit:
+            explore(graph, vertex, cc, visit)
+            cc += 1
+    return cc
 
 if __name__ == '__main__':
     n, m = map(int, sys.stdin.readline().split())
